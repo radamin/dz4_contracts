@@ -1,0 +1,70 @@
+@startuml
+
+class Car {
+    + model: str
+    + max_fuel_level: int
+    + current_fuel_level: int
+    + fuel_consumption: float
+    + engine_ON: bool
+    + def __init__(self, model: str, max_fuel_level: int, current_fuel_level: int, fuel_consumption: float)
+    + def min_fuel_level_sensor(self)
+    + def sensor_reading(self, km: int)
+    + def check_petrol(self, current_fuel_level: int)
+    + def start(self)
+    + def stop(self)
+}
+
+class Driving {
+    + vehicle: Car
+    + def __init__(self, vehicle: Car)
+    + def start_vehicle(self)
+    # def __drive(self, km: int)
+    + def driving(self, km: int)
+    + def stop_vehicle(self)
+}
+
+Car "1" *-- "1" Driving : has
+
+interface Vehicle{
+    + start(self)
+    + stop(self)
+    + min_fuel_level_sensor(self):
+    + sensor_reading(self, km: float)
+    + check_petrol(self, current_liters: float)
+}
+
+Car "1" *-- "1" Vehicle : has
+
+namespace main {
+    class Main {
+        + def main()
+    }
+}
+
+Main "1" --> "1" Driving : creates
+
+namespace PrePostConditions {
+
+    class Preconditions {
+        + def start_vehicle(self)
+    }
+
+    class Postconditions {
+        + def start_vehicle(self)
+        + def stop_vehicle(self)
+        + def driving(self, km: int)
+    }
+
+    class Invariants {
+        + def start_vehicle(self)
+        + def drive(self, km: int)
+        + def driving(self, km: int)
+        + def stop_vehicle(self)
+    }
+
+    Preconditions "1" -- "1" Driving : depends
+    Driving "1" -- "1" Postconditions : depends
+    Invariants "1" -- "1" Driving : depends
+}
+
+@enduml
